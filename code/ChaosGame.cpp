@@ -19,6 +19,7 @@ int main()
 
     vector<Vector2f> vertices;
     vector<Vector2f> points;
+    vector<CircleShape> stars;
 
     // loads font into program
     Font font;
@@ -67,8 +68,8 @@ int main()
 
     int step = 1; //Set the step variable to 1
 
-    Clock rainbowTimer;
-    float rainbowDuration = 5.0f;
+    Clock rainbowTimer; //clock class with rainbowTimer object, counts at start of program
+    float rainbowDuration = 5.0f; //duration BEFORE animation starts
 
 	while (window.isOpen())
 	{
@@ -131,14 +132,21 @@ int main()
             ///calculate midpoint between random vertex and the last point in the vector
             ///push back the newly generated coord.
         }
+        // plays rainbow title text animation at title screen
         if (titleScreen && rainbowTimer.getElapsedTime().asSeconds() > rainbowDuration)
         {
             rainbowTimer.restart();
             rainbowDuration = 0.8f;
 
-            // Update text colors to the next rainbow color
+            // Changes title text to a rainbow effect, switching colors every 0.8 secs
             titleText.setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
             shadowText.setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
+
+            //Changes stars in title screen to rainbow effect
+            for (int i = 0; i < stars.size(); i++)
+            {
+                stars[i].setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
+            }
         }
         /*
 		****************************************
@@ -149,6 +157,19 @@ int main()
 
         if (titleScreen)
         {
+            //Customize stars here
+            CircleShape star;
+            star.setRadius(2);
+            star.setPosition(rand() % 1920, rand() % 1080);
+            star.setFillColor(Color::White);
+            stars.push_back(star);
+
+            //draws out the stars on title screen
+            for (int i = 0; i < stars.size(); i++)
+            {
+                window.draw(stars[i]);
+            }
+
             window.draw(shadowText);
             window.draw(titleText);
             window.draw(startText);
