@@ -38,10 +38,21 @@ int main()
     Text titleText;
     
     titleText.setFont(font);
-    titleText.setCharacterSize(200);
+    titleText.setCharacterSize(250);
     titleText.setFillColor(Color(210, 43, 41));
-    titleText.setPosition(350, 240);
+    titleText.setOutlineColor(Color::White);
+    titleText.setOutlineThickness(2);
+    titleText.setPosition(250, 140);
     titleText.setString("Chaos Game"); //adds title screen 
+
+    Text shadowText;
+
+    shadowText.setFont(font);
+    shadowText.setCharacterSize(250);
+    shadowText.setFillColor(Color(112, 43, 34));
+    shadowText.setPosition(250, 160);
+    shadowText.setString("Chaos Game"); 
+    
 
 
 	while (window.isOpen())
@@ -110,7 +121,11 @@ int main()
             rect.setFillColor(Color::Blue);
             window.draw(rect);
         }
+        window.draw(shadowText);
+
         window.draw(titleText);
+
+        
 
         window.display();
     }
