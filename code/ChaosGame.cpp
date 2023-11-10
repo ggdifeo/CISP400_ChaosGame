@@ -19,6 +19,23 @@ int main()
     vector<Vector2f> vertices;
     vector<Vector2f> points;
 
+    // loads font into program
+    sf::Font font;
+    if (!font.loadFromFile(/home/ubuntu/Desktop/cisp400/CISP400_ChaosGame/CISP400_ChaosGame/font.ttf)) {
+        // Displays message to user if font doesn't load
+        cout << "Error loading font!" << endl;
+        // returns error and exits program
+        return -1;
+    }
+
+    sf::Text text;
+
+    text.setFont(font);
+    text.setCharacterSize(24); //sets text size
+    text.setFillColor(Color::white); // sets text color
+    text.setPosition(10, 10); //positions text
+
+
 	while (window.isOpen())
 	{
         /*
