@@ -105,7 +105,7 @@ int main()
                         ///push back to points vector
                         step = 2;
 
-                        vertices.clear();
+                        
                     }
                 }
             }
