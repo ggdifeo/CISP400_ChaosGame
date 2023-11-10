@@ -39,28 +39,39 @@ int main()
     Text titleText;
     
     titleText.setFont(font);
-    titleText.setCharacterSize(250);
+    titleText.setCharacterSize(150);
     titleText.setFillColor(Color(210, 43, 41));
     titleText.setOutlineColor(Color::White);
     titleText.setOutlineThickness(2);
-    titleText.setPosition(250, 140);
-    titleText.setString("Chaos Game"); //adds title screen 
+    float windowWidth = static_cast<float>(vm.width); //defines a float windowWidth that determines the size of the window / game screen. the static_case<float> converts vm.width to integer for better precision in centering the text
+    const FloatRect titleTextBounds = titleText.getLocalBounds(); //Gets dimensions of the screen
+    float titleTextWidth = titleTextBounds.width; //New float to specify we just want to know the width 
+    float titleTextXPos = (windowWidth - titleTextWidth) / 2.0f; //centers the x axis by finding the half/middle point
+    titleText.setPosition(titleTextXPos, 140); //sets new position but keeps y axis fixed pos
+    
+    titleText.setString("CHAOS GAME"); //adds title screen 
 
     Text shadowText;
 
     shadowText.setFont(font);
-    shadowText.setCharacterSize(250);
+    shadowText.setCharacterSize(150);
     shadowText.setFillColor(Color(112, 43, 34));
-    shadowText.setPosition(250, 160);
-    shadowText.setString("Chaos Game"); 
+    const FloatRect shadowTextBounds = shadowText.getLocalBounds(); //Gets dimensions of the screen
+    float shadowTextWidth = shadowTextBounds.width; //New float to specify we just want to know the width 
+    float shadowTextXPos = (windowWidth - shadowTextWidth) / 2.0f; //centers the x axis by finding the half/middle point
+    shadowText.setPosition(shadowTextXPos, 160); //sets new position but keeps y axis fixed pos
+    shadowText.setString("CHAOS GAME"); 
 
     Text startText;
 
     startText.setFont(font);
-    startText.setCharacterSize(75);
+    startText.setCharacterSize(50);
     startText.setFillColor(Color::White);
-    startText.setPosition(530, 450);
-    startText.setString("Press Any Key to Play!");
+    const FloatRect startTextBounds = startText.getLocalBounds(); //Gets dimensions of the screen
+    float startTextWidth = startTextBounds.width; //New float to specify we just want to know the width 
+    float startTextXPos = (windowWidth - startTextWidth) / 2.0f; //centers the x axis by finding the half/middle point
+    startText.setPosition(startTextXPos, 450); //sets new position but keeps y axis fixed pos
+    startText.setString("PRESS ANY KEY TO PLAY!");
 
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
 
@@ -144,7 +155,7 @@ int main()
         }
         else if (step == 1)
         {
-            text.setString("Step 1: Click to Add 3 Starting Points On Screen, then click again to create image");
+            text.setString("STEP 1: CLICK TO ADD 3 STARTING POINTS ON SCREEN, \n THEN CLICK AGAIN TO CREATE IMAGE."); 
             window.draw(text);
         }
 
