@@ -32,7 +32,7 @@ int main()
     Text text;
 
     text.setFont(font);
-    text.setCharacterSize(24); //sets text size
+    text.setCharacterSize(60); //sets text size
     text.setFillColor(Color::White); // sets text color
     text.setPosition(10, 10); //positions text
 
@@ -99,7 +99,8 @@ int main()
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
-                    else if(points.size() == 0 && step == 1 && vertices.size() >=3)
+                    //right now user has to click 3 times for blue dots, and then another time to initiate the matrix
+                    else if(points.size() == 0 && step == 1 && vertices.size() >= 3)
                     {
                         ///fourth click
                         ///push back to points vector
@@ -143,7 +144,7 @@ int main()
         }
         else if (step == 1)
         {
-            text.setString("Step 1: TEST");
+            text.setString("Step 1: Click to Add 3 Starting Points On Screen, then click again to create image");
             window.draw(text);
         }
 
