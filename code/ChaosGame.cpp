@@ -52,7 +52,14 @@ int main()
     shadowText.setFillColor(Color(112, 43, 34));
     shadowText.setPosition(250, 160);
     shadowText.setString("Chaos Game"); 
-    
+
+    Text startText;
+
+    startText.setFont(font);
+    startText.setCharacterSize(75);
+    startText.setFillColor(Color::White);
+    startText.setPosition(530, 450);
+    startText.setString("Press Any Key to Play!");
 
 
 	while (window.isOpen())
@@ -124,6 +131,8 @@ int main()
         window.draw(shadowText);
 
         window.draw(titleText);
+
+        window.draw(startText);
 
         
 
