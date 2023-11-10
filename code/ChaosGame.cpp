@@ -39,38 +39,28 @@ int main()
     Text titleText;
     
     titleText.setFont(font);
-    titleText.setCharacterSize(150);
+    titleText.setCharacterSize(200);
     titleText.setFillColor(Color(210, 43, 41));
     titleText.setOutlineColor(Color::White);
     titleText.setOutlineThickness(2);
-    float windowWidth = static_cast<float>(vm.width); //defines a float windowWidth that determines the size of the window / game screen. the static_case<float> converts vm.width to integer for better precision in centering the text
-    const FloatRect titleTextBounds = titleText.getLocalBounds(); //Gets dimensions of the screen
-    float titleTextWidth = titleTextBounds.width; //New float to specify we just want to know the width 
-    float titleTextXPos = (windowWidth - titleTextWidth) / 2.0f; //centers the x axis by finding the half/middle point
-    titleText.setPosition(titleTextXPos, 140); //sets new position but keeps y axis fixed pos
+    titleText.setPosition(260, 140);
     
     titleText.setString("CHAOS GAME"); //adds title screen 
 
     Text shadowText;
 
     shadowText.setFont(font);
-    shadowText.setCharacterSize(150);
+    shadowText.setCharacterSize(200);
     shadowText.setFillColor(Color(112, 43, 34));
-    const FloatRect shadowTextBounds = shadowText.getLocalBounds(); //Gets dimensions of the screen
-    float shadowTextWidth = shadowTextBounds.width; //New float to specify we just want to know the width 
-    float shadowTextXPos = (windowWidth - shadowTextWidth) / 2.0f; //centers the x axis by finding the half/middle point
-    shadowText.setPosition(shadowTextXPos, 160); //sets new position but keeps y axis fixed pos
+    shadowText.setPosition(260, 160);
     shadowText.setString("CHAOS GAME"); 
 
     Text startText;
 
     startText.setFont(font);
-    startText.setCharacterSize(50);
-    startText.setFillColor(Color::White);
-    const FloatRect startTextBounds = startText.getLocalBounds(); //Gets dimensions of the screen
-    float startTextWidth = startTextBounds.width; //New float to specify we just want to know the width 
-    float startTextXPos = (windowWidth - startTextWidth) / 2.0f; //centers the x axis by finding the half/middle point
-    startText.setPosition(startTextXPos, 450); //sets new position but keeps y axis fixed pos
+    startText.setCharacterSize(75);
+    startText.setFillColor(Color::White); 
+    startText.setPosition(260, 450);
     startText.setString("PRESS ANY KEY TO PLAY!");
 
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
