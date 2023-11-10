@@ -21,7 +21,8 @@ int main()
 
     // loads font into program
     Font font;
-    if (!font.loadFromFile("font.ttf")) {
+    if (!font.loadFromFile("font.ttf")) 
+    {
         // Displays message to user if font doesn't load
         cout << "Error loading font!" << endl;
         // returns error and exits program
@@ -61,6 +62,9 @@ int main()
     startText.setPosition(530, 450);
     startText.setString("Press Any Key to Play!");
 
+    bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
+
+    int step = 1; //Set the step variable to 1
 
 	while (window.isOpen())
 	{
@@ -77,6 +81,12 @@ int main()
 				// Quit the game when the window is closed
 				window.close();
             }
+
+            if (event.type == Event::KeyPressed && titleScreen) 
+            {
+                titleScreen = false;
+            }
+
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
@@ -89,10 +99,13 @@ int main()
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
-                    else if(points.size() == 0)
+                    else if(points.size() == 0 && step == 1 && vertices.size() >=3)
                     {
                         ///fourth click
                         ///push back to points vector
+                        step = 2;
+
+                        vertices.clear();
                     }
                 }
             }
@@ -121,20 +134,26 @@ int main()
 		****************************************
 		*/
         window.clear();
-        for(int i = 0; i < vertices.size(); i++)
+
+        if (titleScreen)
+        {
+            window.draw(shadowText);
+            window.draw(titleText);
+            window.draw(startText);
+        }
+        else if (step == 1)
+        {
+            text.setString("Step 1: TEST");
+            window.draw(text);
+        }
+
+        for (int i = 0; i < vertices.size(); i++)
         {
             RectangleShape rect(Vector2f(10,10));
             rect.setPosition(Vector2f(vertices[i].x, vertices[i].y));
             rect.setFillColor(Color::Blue);
             window.draw(rect);
         }
-        window.draw(shadowText);
-
-        window.draw(titleText);
-
-        window.draw(startText);
-
-        
 
         window.display();
     }
