@@ -1,6 +1,7 @@
 // Include important C++ libraries here
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/System/Clock.hpp>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -66,6 +67,9 @@ int main()
 
     int step = 1; //Set the step variable to 1
 
+    Clock rainbowTimer;
+    float rainbowDuration = 3.0f;
+
 	while (window.isOpen())
 	{
         /*
@@ -120,8 +124,6 @@ int main()
 		Update
 		****************************************
 		*/
-
-
         if(points.size() > 0)
         {
             ///generate more point(s)
@@ -129,7 +131,14 @@ int main()
             ///calculate midpoint between random vertex and the last point in the vector
             ///push back the newly generated coord.
         }
+        if (titleScreen && rainbowTimer.getElapsedTime().asSeconds() > rainbowDuration)
+        {
+            rainbowTimer.restart();
 
+            // Update text colors to the next rainbow color
+            titleText.setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
+            shadowText.setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
+        }
         /*
 		****************************************
 		Draw
