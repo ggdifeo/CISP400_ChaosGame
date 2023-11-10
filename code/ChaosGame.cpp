@@ -43,7 +43,7 @@ int main()
     titleText.setFillColor(Color(210, 43, 41));
     titleText.setOutlineColor(Color::White);
     titleText.setOutlineThickness(2);
-    titleText.setPosition(260, 140);
+    titleText.setPosition(300, 140);
     
     titleText.setString("CHAOS GAME"); //adds title screen 
 
@@ -52,7 +52,7 @@ int main()
     shadowText.setFont(font);
     shadowText.setCharacterSize(200);
     shadowText.setFillColor(Color(112, 43, 34));
-    shadowText.setPosition(260, 160);
+    shadowText.setPosition(300, 160);
     shadowText.setString("CHAOS GAME"); 
 
     Text startText;
@@ -60,7 +60,7 @@ int main()
     startText.setFont(font);
     startText.setCharacterSize(75);
     startText.setFillColor(Color::White); 
-    startText.setPosition(260, 450);
+    startText.setPosition(460, 450);
     startText.setString("PRESS ANY KEY TO PLAY!");
 
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
