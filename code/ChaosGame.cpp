@@ -38,9 +38,9 @@ int main()
     Text titleText;
     
     titleText.setFont(font);
-    titleText.setCharacterSize(50);
-    titleText.setFillColor(Color::Red);
-    titleText.setPosition(10, 10);
+    titleText.setCharacterSize(200);
+    titleText.setFillColor(Color(210, 43, 41));
+    titleText.setPosition(350, 240);
     titleText.setString("Chaos Game"); //adds title screen 
 
 
