@@ -59,9 +59,9 @@ int main()
     Text startText;
 
     startText.setFont(font);
-    startText.setCharacterSize(75);
+    startText.setCharacterSize(60);
     startText.setFillColor(Color::White); 
-    startText.setPosition(430, 450);
+    startText.setPosition(500, 450);
     startText.setString("     PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
 
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
@@ -69,7 +69,7 @@ int main()
     int step = 1; //Set the step variable to 1
 
     Clock rainbowTimer; //clock class with rainbowTimer object, counts at start of program
-    float rainbowDuration = 5.0f; //duration BEFORE animation starts
+    float rainbowDuration = 8.0f; //duration BEFORE animation starts
 
 	while (window.isOpen())
 	{
@@ -86,7 +86,7 @@ int main()
 				// Quit the game when the window is closed
 				window.close();
             }
-
+            //Exits title screen ONLY if user presses a key
             if (event.type == Event::KeyPressed && titleScreen) 
             {
                 titleScreen = false;
