@@ -59,8 +59,8 @@ int main()
     startText.setFont(font);
     startText.setCharacterSize(75);
     startText.setFillColor(Color::White); 
-    startText.setPosition(460, 450);
-    startText.setString("\u00A9 2023 KARISSA & GABE\n\nPRESS ANY KEY TO PLAY!");
+    startText.setPosition(430, 450);
+    startText.setString("     PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
 
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
 
