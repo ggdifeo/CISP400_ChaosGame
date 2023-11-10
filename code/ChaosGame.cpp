@@ -68,7 +68,7 @@ int main()
     int step = 1; //Set the step variable to 1
 
     Clock rainbowTimer;
-    float rainbowDuration = 3.0f;
+    float rainbowDuration = 5.0f;
 
 	while (window.isOpen())
 	{
@@ -134,6 +134,7 @@ int main()
         if (titleScreen && rainbowTimer.getElapsedTime().asSeconds() > rainbowDuration)
         {
             rainbowTimer.restart();
+            rainbowDuration = 0.8f;
 
             // Update text colors to the next rainbow color
             titleText.setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
