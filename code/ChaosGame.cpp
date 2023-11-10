@@ -44,7 +44,6 @@ int main()
     titleText.setOutlineColor(Color::White);
     titleText.setOutlineThickness(2);
     titleText.setPosition(300, 140);
-    
     titleText.setString("CHAOS GAME"); //adds title screen 
 
     Text shadowText;
@@ -88,7 +87,7 @@ int main()
                 titleScreen = false;
             }
 
-            if (event.type == sf::Event::MouseButtonPressed)
+            if (!titleScreen && event.type == sf::Event::MouseButtonPressed) //updated line so user cannot click on title screen, must press a key first
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
