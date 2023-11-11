@@ -1,4 +1,3 @@
-// Include important C++ libraries here
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/System/Clock.hpp>
@@ -7,207 +6,154 @@
 #include <vector>
 #include <random>
 
-// Make code easier to type with "using namespace"
 using namespace sf;
 using namespace std;
 
 int main()
 {
-    // Create a video mode object
-	VideoMode vm(1920, 1080);
-	// Create and open a window for the game
-	RenderWindow window(vm, "Chaos Game!!", Style::Default);
+    VideoMode vm(1920, 1080);
+    RenderWindow window(vm, "Chaos Game!!", Style::Default);
 
     vector<Vector2f> vertices;
     vector<Vector2f> points;
     vector<CircleShape> stars;
 
-    default_random_engine generator; // picks between 1 of the 3 points A, B, C --> website Gabe: https://www.sfml-dev.org/tutorials/1.6/system-random.php <-- 
+    default_random_engine generator;
     uniform_int_distribution<int> uniform_dist(0, 2);
 
-
-    // loads font into program
     Font font;
     if (!font.loadFromFile("font.ttf")) 
     {
-        // Displays message to user if font doesn't load
         cout << "Error loading font!" << endl;
-        // returns error and exits program
         return -1;
     }
 
     Text text;
-
     text.setFont(font);
-    text.setCharacterSize(60); //sets text size
-    text.setFillColor(Color::White); // sets text color
-    text.setPosition(10, 10); //positions text
+    text.setCharacterSize(60);
+    text.setFillColor(Color::White);
+    text.setPosition(10, 10);
 
     Text titleText;
-    
     titleText.setFont(font);
     titleText.setCharacterSize(250);
     titleText.setFillColor(Color(210, 43, 41));
     titleText.setOutlineColor(Color::White);
     titleText.setOutlineThickness(2);
     titleText.setPosition(150, 140);
-    titleText.setString("CHAOS GAME"); //adds title screen 
+    titleText.setString("CHAOS GAME");
 
     Text shadowText;
-
     shadowText.setFont(font);
     shadowText.setCharacterSize(250);
     shadowText.setFillColor(Color(112, 43, 34));
     shadowText.setPosition(150, 160);
-    shadowText.setString("CHAOS GAME"); 
+    shadowText.setString("CHAOS GAME");
 
     Text startText;
-
     startText.setFont(font);
     startText.setCharacterSize(60);
-    startText.setFillColor(Color::White); 
+    startText.setFillColor(Color::White);
     startText.setPosition(500, 500);
     startText.setString("     PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
 
-    int vertexCount = 0; //tracks the number of vertices user sets by clicking on screen
-    
-    bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
-
+    int vertexCount = 0;
+    bool titleScreen = true;
     bool enterPressed = false;
+    int step = 1;
+    Clock rainbowTimer;
+    float rainbowDuration = 8.0f;
 
-    int step = 1; //Set the step variable to 1
-
-    Clock rainbowTimer; //clock class with rainbowTimer object, counts at start of program
-    float rainbowDuration = 8.0f; //duration BEFORE animation starts
-
-	while (window.isOpen())
-	{
-        /*
-		****************************************
-		Handle the players input
-		****************************************
-		*/
+    while (window.isOpen())
+    {
         Event event;
-		while (window.pollEvent(event))
-		{
+        while (window.pollEvent(event))
+        {
             if (event.type == Event::Closed)
             {
-				// Quit the game when the window is closed
-				window.close();
+                window.close();
             }
-            //Exits title screen ONLY if user presses a key
             if (event.type == Event::KeyPressed && titleScreen) 
             {
                 titleScreen = false;
             }
 
-            if (!titleScreen && event.type == sf::Event::MouseButtonPressed) //updated line so user cannot click on title screen, must press a key first
+            if (!titleScreen && event.type == sf::Event::MouseButtonPressed)
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    std::cout << "the left button was pressed" << std::endl;
-                    std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-                    std::cout << "mouse y: " << event.mouseButton.y << std::endl;
-
-                    if(vertices.size() =< 10) //limits number of vertices user can click
+                    if (vertices.size() < 10 && step == 1)
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 
                         if (vertices.size() == 10)
                         {
                             text.setString("");
-                            text.setString("You have reached the max vertices.\nPress Enter.");
+                            text.setString("You have reached the max vertices.\nPress Enter to set midpoints.");
                             window.draw(text);
+                            step = 2;
                         }
                     }
-
-
-                    //right now user has to click 3 times for blue dots, and then another time to initiate the matrix
-                    else if(points.size() == 0 && step == 1 && vertices.size() >= 3 && enterPressed)
+                    else if (step == 2 && enterPressed)
                     {
-                        ///fourth click
-                        ///push back to points vector
-                        step = 2;
-
-                        //assigns the last click's coords as starting point
                         points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
-                    else if (points.size() > 0 && step > 1 && vertices.size() < 11 && enterPressed)
-                    {
-                            ++step;
-                            text.setString("");
-                            text.setString("Step 2: Click where you want midpoint to be.");
-                            window.draw(text);
-
-                            points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
-                    }
-                           
                 }  
             }
             else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
             {
-                enterPressed = true;
-            }
+                if (step == 1)
+                {
+                    enterPressed = true;
+                }
+                else if (step == 2 && points.size() > 0)
+                {
+                    // Generate fractal pattern for all vertices
+                    for (const Vector2f& vertex : vertices)
+                    {
+                        for (int i = 0; i < 50; i++)
+                        {
+                            int randomSelection = uniform_dist(generator);
+                            Vector2f pick_random_vertex = vertices[randomSelection];
+                            Vector2f last_point = vertex;
+                            Vector2f calculate_midpoint = (pick_random_vertex + last_point) / 2.0f;
+                            points.push_back(calculate_midpoint);
+                        }
+                    }
+                    step = 3; // Move to the next step after generating the fractal pattern
                 }
             }
         }
+
         if (Keyboard::isKeyPressed(Keyboard::Escape))
-		{
-			window.close();
-		}
-        /*
-		****************************************
-		Update
-		****************************************
-		*/
-        if(points.size() > 0)
         {
-            for (int i = 0; i < 50; i++)
-            {
-                int randomSelection = uniform_dist(generator); // picks a random location 
-                Vector2f pick_random_vertex = vertices[randomSelection]; // gets the last element of a vector
-                Vector2f last_point = points.back();
-                Vector2f calculate_midpoint = (pick_random_vertex + last_point) / 2.0f; //finds the midpoint
-                points.push_back(calculate_midpoint);
-            }
-            ///generate more point(s)
-            ///select random vertex
-            ///calculate midpoint between random vertex and the last point in the vector
-            ///push back the newly generated coord.
+            window.close();
         }
-        // plays rainbow title text animation at title screen
-        if (titleScreen && rainbowTimer.getElapsedTime().asSeconds() > rainbowDuration)
+
+        if (points.size() > 0 && step == 3)
         {
-            rainbowTimer.restart();
-            rainbowDuration = 0.8f;
-
-            // Changes title text to a rainbow effect, switching colors every 0.8 secs
-            titleText.setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
-            shadowText.setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
-
-            //Changes stars in title screen to rainbow effect
-            for (int i = 0; i < stars.size(); i++)
+            // Draw fractal points
+            for (size_t i = 0; i < points.size(); ++i)
             {
-                stars[i].setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
+                CircleShape point(2);
+                point.setPosition(points[i]);
+                point.setFillColor(Color::White);
+                window.draw(point);
             }
         }
-        /*
-		****************************************
-		Draw
-		****************************************
-		*/
+
         window.clear();
 
         if (titleScreen)
         {
-            //Customize stars here
+            // Customize stars here
             CircleShape star;
             star.setRadius(2);
             star.setPosition(rand() % 1920, rand() % 1080);
             star.setFillColor(Color::White);
             stars.push_back(star);
 
-            //draws out the stars on title screen
+            // Draws out the stars on the title screen
             for (int i = 0; i < stars.size(); i++)
             {
                 window.draw(stars[i]);
@@ -219,25 +165,18 @@ int main()
         }
         else if (step == 1)
         {
-            text.setString("CLICK TO ADD 3 STARTING POINTS ON SCREEN, \n THEN CLICK AGAIN TO CREATE IMAGE."); 
+            text.setString("CLICK TO ADD 3 STARTING POINTS ON SCREEN, \n THEN PRESS ENTER."); 
             window.draw(text);
         }
-        else 
+        else if (step == 2)
+        {
+            text.setString("Step 2: Click where you want midpoints to be.\nPress Enter to generate fractal pattern."); 
+            window.draw(text);
+        }
+        else if (step == 3)
         {
             text.setString("ENJOY THE FRACTAL PATTERN!\nPRESS 'ESC' TO EXIT WHEN DONE"); 
             window.draw(text);
-
-            //Draws the fractal points
-            for (size_t i = 1; i < points.size(); ++i)
-            {
-                for (size_t i = 0; i < points.size(); ++i)
-                {
-                    CircleShape point(2);
-                    point.setPosition(points[i]);
-                    point.setFillColor(Color::White);
-                    window.draw(point);
-                }
-            }
         }
 
         for (int i = 0; i < vertices.size(); i++)
@@ -250,4 +189,6 @@ int main()
 
         window.display();
     }
+
+    return 0;
 }
