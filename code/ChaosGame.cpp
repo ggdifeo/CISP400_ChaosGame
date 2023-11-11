@@ -69,6 +69,8 @@ int main()
     startText.setPosition(500, 500);
     startText.setString("     PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
 
+    int vertexCount = 0; //tracks the number of vertices user sets by clicking on screen
+
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
 
     int step = 1; //Set the step variable to 1
@@ -105,16 +107,28 @@ int main()
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
 
-                    if(vertices.size() < 3)
+                    if(vertices.size() < 11) //limits number of vertices user can click
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+
+                        if (vertices.size() == 11)
+                        {
+                            text.setString("");
+                            text.setString("You have reached the max vertices.\nPress Enter to generate fractal pattern");
+                            window.draw(text);
+                        }
                     }
+
+
                     //right now user has to click 3 times for blue dots, and then another time to initiate the matrix
-                    else if(points.size() == 0 && step == 1 && vertices.size() >= 3)
+                    else if(points.size() == 0 && step == 1 && vertices.size() >= 3 && event.key.code == sf::Keyboard::Enter)
                     {
                         ///fourth click
                         ///push back to points vector
                         step = 2;
+
+                        //assigns the last click's coords as starting point
+                        points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 
                         
                     }
@@ -194,14 +208,19 @@ int main()
         }
         else 
         {
-            //Draws the fractal lines
+            text.setString("ENJOY THE FRACTAL PATTERN!\nPRESS 'ESC' TO EXIT WHEN DONE"); 
+            window.draw(text);
+
+            //Draws the fractal points
             for (size_t i = 1; i < points.size(); ++i)
             {
-                Vertex line[] = {
-                    Vertex(points[i-1], Color::White),
-                    Vertex(points[i], Color::White)
-                };
-                window.draw(line, 2, Lines);
+                for (size_t i = 0; i < points.size(); ++i)
+                {
+                    CircleShape point(2);
+                    point.setPosition(points[i]);
+                    point.setFillColor(Color::White);
+                    window.draw(point);
+                }
             }
         }
 
