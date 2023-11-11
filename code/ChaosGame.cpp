@@ -129,8 +129,15 @@ int main()
 
                         //assigns the last click's coords as starting point
                         points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+                    }
+                    else if (points.size() > 0 && step > 1 && vertices.size() < 10 || (points.size() > 0 && step > 1 && vertices.size() >= 10))
+                    {
+                        ++step;
+                        text.setString("");
+                        text.setString("Step 2: Click where you want the midpoint to be.");
+                        window.draw(text);
 
-                        
+                        points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
                 }
             }
