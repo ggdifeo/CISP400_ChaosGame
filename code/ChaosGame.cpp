@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <random>
 
 // Make code easier to type with "using namespace"
 using namespace sf;
@@ -20,6 +21,10 @@ int main()
     vector<Vector2f> vertices;
     vector<Vector2f> points;
     vector<CircleShape> stars;
+
+    default_random_engine generator; // picks between 1 of the 3 points A, B, C --> website Gabe: https://www.sfml-dev.org/tutorials/1.6/system-random.php <-- 
+    uniform_int_distribution<int> uniform_dist(0, 2);
+
 
     // loads font into program
     Font font;
@@ -127,6 +132,14 @@ int main()
 		*/
         if(points.size() > 0)
         {
+            for (int i = 0; i < 50; i++)
+            {
+                int randomSelection = uniform_dist(generator); // picks a random location 
+                Vector2f pick_random_vertex = vertices[randomSelection]; // gets the last element of a vector
+                Vector2f last_point = points.back();
+                Vector2f calculate_midpoint = (pick_random_vertex + last_point) / 2.0f; //finds the midpoint
+                points.push_back(calculate_midpoint);
+            }
             ///generate more point(s)
             ///select random vertex
             ///calculate midpoint between random vertex and the last point in the vector
@@ -176,8 +189,20 @@ int main()
         }
         else if (step == 1)
         {
-            text.setString("STEP 1: CLICK TO ADD 3 STARTING POINTS ON SCREEN, \n THEN CLICK AGAIN TO CREATE IMAGE."); 
+            text.setString("CLICK TO ADD 3 STARTING POINTS ON SCREEN, \n THEN CLICK AGAIN TO CREATE IMAGE."); 
             window.draw(text);
+        }
+        else 
+        {
+            //Draws the fractal lines
+            for (size_t i = 1; i < points.size(); ++i)
+            {
+                Vertex line[] = {
+                    Vertex(points[i-1], Color::White),
+                    Vertex(points[i], Color::White)
+                };
+                window.draw(line, 2, Lines);
+            }
         }
 
         for (int i = 0; i < vertices.size(); i++)
