@@ -70,8 +70,10 @@ int main()
     startText.setString("     PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
 
     int vertexCount = 0; //tracks the number of vertices user sets by clicking on screen
-
+    
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
+
+    bool enterPressed = false;
 
     int step = 1; //Set the step variable to 1
 
@@ -107,21 +109,21 @@ int main()
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
 
-                    if(vertices.size() < 11) //limits number of vertices user can click
+                    if(vertices.size() =< 10) //limits number of vertices user can click
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 
-                        if (vertices.size() == 11)
+                        if (vertices.size() == 10)
                         {
                             text.setString("");
-                            text.setString("You have reached the max vertices.\nPress Enter to generate fractal pattern");
+                            text.setString("You have reached the max vertices.\nPress Enter.");
                             window.draw(text);
                         }
                     }
 
 
                     //right now user has to click 3 times for blue dots, and then another time to initiate the matrix
-                    else if(points.size() == 0 && step == 1 && vertices.size() >= 3 && event.key.code == sf::Keyboard::Enter)
+                    else if(points.size() == 0 && step == 1 && vertices.size() >= 3 && enterPressed)
                     {
                         ///fourth click
                         ///push back to points vector
@@ -130,15 +132,22 @@ int main()
                         //assigns the last click's coords as starting point
                         points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
-                    else if (points.size() > 0 && step > 1 && vertices.size() < 10 || (points.size() > 0 && step > 1 && vertices.size() >= 10))
+                    else if (points.size() > 0 && step > 1 && vertices.size() < 11 && enterPressed)
                     {
-                        ++step;
-                        text.setString("");
-                        text.setString("Step 2: Click where you want the midpoint to be.");
-                        window.draw(text);
+                            ++step;
+                            text.setString("");
+                            text.setString("Step 2: Click where you want midpoint to be.");
+                            window.draw(text);
 
-                        points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+                            points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
+                           
+                }  
+            }
+            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
+            {
+                enterPressed = true;
+            }
                 }
             }
         }
