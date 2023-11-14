@@ -77,6 +77,10 @@ int main()
 
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
 
+    bool vertexInputDone = false;
+
+    size_t numVertices = 0;
+
     int step = 1; //Set the step variable to 1
 
     Clock rainbowTimer; //clock class with rainbowTimer object, counts at start of program
@@ -111,7 +115,14 @@ int main()
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
 
-                    if(vertices.size() < 3)
+                    if (numVertices == 0)
+                    {
+                        std::cout << "Enter the number of vertices to plot: ";
+                        cin >> numVertices;
+                        cout << "Now Click to plot vertices." << endl;
+                    }
+
+                    if(vertices.size() < numVertices)
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
@@ -120,11 +131,13 @@ int main()
                     {
                         ///fourth click
                         ///push back to points vector
-                        step = 2;
+                        numVertices = vertices.size();
 
-                        points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+                            step = 2;
 
+                            points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                         
+
                     }
                 }
             }
