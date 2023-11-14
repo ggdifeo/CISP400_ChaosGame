@@ -31,7 +31,7 @@ int main()
     size_t numVertices = 0;
 
     default_random_engine generator; // picks between 1 of the 3 points A, B, C --> website Gabe: https://www.sfml-dev.org/tutorials/1.6/system-random.php <-- 
-    uniform_int_distribution<size_t> uniform_dist(0, numVertices - 1);
+    uniform_int_distribution<size_t> uniform_dist(0, numVertices > 0 ? numVertices - 1 : 0);
 
 
     // loads font into program
