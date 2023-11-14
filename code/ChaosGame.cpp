@@ -115,7 +115,7 @@ int main()
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
-                    //right now user has to click 3 times for blue dots, and then another time to initiate the matrix
+                    //right now user has to click 6 times for blue dots, and then another time to initiate the matrix
                     else if(points.size() == 0)
                     {
                         ///fourth click
@@ -140,7 +140,7 @@ int main()
 		*/
         if(points.size() > 0)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 50; i++)
             {
                 int randomSelection = uniform_dist(generator); // picks a random location 
                 Vector2f pick_random_vertex = vertices[randomSelection]; // gets the last element of a vector
@@ -201,7 +201,7 @@ int main()
         }
         else if (step == 1)
         {
-            text.setString("CLICK TO ADD 3 STARTING POINTS ON SCREEN, \n THEN CLICK AGAIN TO CREATE IMAGE."); 
+            text.setString("CLICK TO ADD 6 STARTING POINTS ON SCREEN, \n THEN CLICK AGAIN TO CREATE IMAGE."); 
             window.draw(text);
         }
         else
@@ -209,14 +209,6 @@ int main()
             text.setString("ENJOY THE FRACTAL PATTERN!\nPRESS 'ESC' TO EXIT WHEN DONE"); 
             window.draw(text);
             
-            //Draws the fractal points
-            /*for (size_t i = 0; i < points.size(); ++i)
-            {
-                CircleShape point(2);
-                point.setPosition(points[i]);
-                point.setFillColor(Color::White);
-                window.draw(point);
-            }*/
             for (size_t i = 0; i < points.size(); ++i) {
             CircleShape point(2);
             point.setPosition(points[i]);
