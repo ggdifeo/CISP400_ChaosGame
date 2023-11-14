@@ -21,6 +21,12 @@ int main()
     vector<Vector2f> vertices;
     vector<Vector2f> points;
     vector<CircleShape> stars;
+    vector<Color> colors = {
+    Color::Magenta,
+    Color::Transparent,
+    Color::Cyan,
+};
+    size_t colorIndex = 0;
 
     default_random_engine generator; // picks between 1 of the 3 points A, B, C --> website Gabe: https://www.sfml-dev.org/tutorials/1.6/system-random.php <-- 
     uniform_int_distribution<int> uniform_dist(0, 2);
@@ -200,13 +206,26 @@ int main()
             window.draw(text);
             
             //Draws the fractal points
-            for (size_t i = 0; i < points.size(); ++i)
+            /*for (size_t i = 0; i < points.size(); ++i)
             {
                 CircleShape point(2);
                 point.setPosition(points[i]);
                 point.setFillColor(Color::White);
                 window.draw(point);
-            }
+            }*/
+            for (size_t i = 0; i < points.size(); ++i) {
+            CircleShape point(2);
+            point.setPosition(points[i]);
+
+            // Get the current color
+            Color color = colors[colorIndex];
+
+            point.setFillColor(color);
+            window.draw(point);
+
+            // Increment the color index, looping back to the start if needed
+            colorIndex = (colorIndex + 1) % colors.size();
+        }
         }
 
         for (int i = 0; i < vertices.size(); i++)
