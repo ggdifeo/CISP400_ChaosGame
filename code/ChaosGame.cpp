@@ -107,12 +107,14 @@ int main()
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    std::cout << "the left button was pressed" << std::endl;
-                    std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-                    std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+                    
 
                     if(vertices.size() < 6)
                     {
+                        std::cout << "the left button was pressed" << std::endl;
+                        std::cout << "mouse x: " << event.mouseButton.x << std::endl;
+                        std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
                     //right now user has to click 6 times for blue dots, and then another time to initiate the matrix
