@@ -28,10 +28,8 @@ int main()
 };
     size_t colorIndex = 0;
 
-    size_t numVertices = 0;
-
     default_random_engine generator; // picks between 1 of the 3 points A, B, C --> website Gabe: https://www.sfml-dev.org/tutorials/1.6/system-random.php <-- 
-    uniform_int_distribution<size_t> uniform_dist(0, numVertices > 0 ? numVertices - 1 : 0);
+    uniform_int_distribution<int> uniform_dist(0, 5);
 
 
     // loads font into program
@@ -78,7 +76,7 @@ int main()
     startText.setString("     PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
 
     bool titleScreen = true; //Establishes title screen seperate from game (true = shows title screen)
-  
+
     int step = 1; //Set the step variable to 1
 
     Clock rainbowTimer; //clock class with rainbowTimer object, counts at start of program
@@ -107,20 +105,13 @@ int main()
 
             if (!titleScreen && event.type == sf::Event::MouseButtonPressed) //updated line so user cannot click on title screen, must press a key first
             {
-                if (numVertices == 0)
-                    {
-                        std::cout << "Enter the number of vertices to plot: ";
-                        cin >> numVertices;
-                        cout << "Now Click to plot vertices." << endl;
-                    }
-
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     std::cout << "the left button was pressed" << std::endl;
                     std::cout << "mouse x: " << event.mouseButton.x << std::endl;
                     std::cout << "mouse y: " << event.mouseButton.y << std::endl;
 
-                    if(vertices.size() < numVertices)
+                    if(vertices.size() < 6)
                     {
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
@@ -129,13 +120,11 @@ int main()
                     {
                         ///fourth click
                         ///push back to points vector
-                        numVertices = vertices.size();
+                        step = 2;
 
-                            step = 2;
+                        points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
 
-                            points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                         
-
                     }
                 }
             }
@@ -149,20 +138,20 @@ int main()
 		Update
 		****************************************
 		*/
-        if(points.size() > 0 && vertices.size() == numVertices)
+        if(points.size() > 0)
         {
-            //for (size_t j = 0; j < vertices.size(); ++j)
-            //{
-               for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 20; i++)
             {
                 int randomSelection = uniform_dist(generator); // picks a random location 
                 Vector2f pick_random_vertex = vertices[randomSelection]; // gets the last element of a vector
                 Vector2f last_point = points.back();
-                Vector2f calculate_midpoint = (pick_random_vertex + last_point) / 2.0f; //finds the midpoint
-                points.push_back(calculate_midpoint);
-            } 
-            //}
 
+                Vector2f direction = pick_random_vertex - last_point;
+
+                Vector2f new_point = last_point + (2.0f / 3.0f) * direction; //finds the midpoint
+
+                points.push_back(new_point);
+            }
             ///generate more point(s)
             ///select random vertex
             ///calculate midpoint between random vertex and the last point in the vector
@@ -228,7 +217,7 @@ int main()
                 point.setFillColor(Color::White);
                 window.draw(point);
             }*/
-            for (int i = 0; i < points.size(); ++i) {
+            for (size_t i = 0; i < points.size(); ++i) {
             CircleShape point(2);
             point.setPosition(points[i]);
 
