@@ -23,7 +23,7 @@ int main()
     vector<CircleShape> stars;
     vector<Color> colors = {
     Color::Magenta,
-    Color::Transparent,
+    Color::Yellow,
     Color::Cyan,
 };
     size_t colorIndex = 0;
@@ -150,7 +150,7 @@ int main()
 
                 Vector2f direction = pick_random_vertex - last_point;
 
-                Vector2f new_point = last_point + (2.0f / 3.0f) * direction; //finds the midpoint
+                Vector2f new_point = last_point + (2.0f / 3.0f) * direction; 
 
                 points.push_back(new_point);
             }
