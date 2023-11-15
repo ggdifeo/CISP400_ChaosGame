@@ -1,38 +1,41 @@
-// Include important C++ libraries here
+// Gabriel DiFeo && Karissa Merrill 
+
+// Headers 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/System/Clock.hpp>
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <random>
+#include <random> // need for uniform
 
-// Make code easier to type with "using namespace"
+//Namespace Declarations
 using namespace sf;
 using namespace std;
 
 int main()
 {
     // Create a video mode object
-	VideoMode vm(1920, 1080);
 	// Create and open a window for the game
+	VideoMode vm(1920, 1080);
 	RenderWindow window(vm, "Chaos Game!!", Style::Default);
 
-    vector<Vector2f> vertices;
-    vector<Vector2f> points;
-    vector<CircleShape> stars;
+    vector<Vector2f> vertices; //stores the points that make the corners of the shape (blue dots)
+    vector<Vector2f> points; // stores the points that start populating during the game itself 
+    vector<CircleShape> stars; // stars on the title screen
+ 
     vector<Color> colors = {
     Color::Magenta,
     Color::Yellow,
     Color::Cyan,
 };
-    size_t colorIndex = 0;
+    size_t colorIndex = 0; // index to keep track of the current colour from colors Vector (above)
 
-    default_random_engine generator; // picks between 1 of the 3 points A, B, C --> website Gabe: https://www.sfml-dev.org/tutorials/1.6/system-random.php <-- 
-    uniform_int_distribution<int> uniform_dist(0, 5);
+    default_random_engine generator; // Random number generator // website: https://www.sfml-dev.org/tutorials/1.6/system-random.php
+    uniform_int_distribution<int> uniform_dist(0, 5); // during the fractal itself this is helping with the algorithm of the points being selected
 
 
-    // loads font into program
+    // Font for Chaos Game
     Font font;
     if (!font.loadFromFile("font.ttf")) 
     {
@@ -45,9 +48,9 @@ int main()
     Text text;
 
     text.setFont(font);
-    text.setCharacterSize(60); //sets text size
-    text.setFillColor(Color::White); // sets text color
-    text.setPosition(10, 10); //positions text
+    text.setCharacterSize(60); //Sets text size
+    text.setFillColor(Color::White); //Sets text color
+    text.setPosition(10, 10); //Positions text
 
     Text titleText;
     
@@ -57,7 +60,7 @@ int main()
     titleText.setOutlineColor(Color::White);
     titleText.setOutlineThickness(2);
     titleText.setPosition(150, 140);
-    titleText.setString("CHAOS GAME"); //adds title screen 
+    titleText.setString("CHAOS GAME"); //Adds title screen 
 
     Text shadowText;
 
@@ -89,6 +92,10 @@ int main()
 		Handle the players input
 		****************************************
 		*/
+		
+	// One Event valid at a time
+	// Poll event is also the wait event
+	// KeyPressed event is when key is pressed and then released (SFML)
         Event event;
 		while (window.pollEvent(event))
 		{
@@ -97,19 +104,20 @@ int main()
 				// Quit the game when the window is closed
 				window.close();
             }
-            //Exits title screen ONLY if user presses a key
+			
+            //Exits title screen ONLY if user presses a key (NO CLICKY)
             if (event.type == Event::KeyPressed && titleScreen) 
             {
                 titleScreen = false;
             }
 
-            if (!titleScreen && event.type == sf::Event::MouseButtonPressed) //updated line so user cannot click on title screen, must press a key first
+            if (!titleScreen && event.type == sf::Event::MouseButtonPressed) // User cannot click here -> Additionally, checks if no-title screen
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     
 
-                    if(vertices.size() < 6)
+                    if(vertices.size() < 6) // We're mouse clicking the verticies // adds new one when the end user clicks 
                     {
                         std::cout << "the left button was pressed" << std::endl;
                         std::cout << "mouse x: " << event.mouseButton.x << std::endl;
@@ -117,49 +125,42 @@ int main()
 
                         vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
                     }
-                    //right now user has to click 6 times for blue dots, and then another time to initiate the matrix
-                    else if(points.size() == 0)
+                    //right now user has to click 6 times for blue dots, and then another time to initiate the matrix and changes us to step 2;
+                    else if(points.size() == 0) 
                     {
-                        ///fourth click
-                        ///push back to points vector
                         step = 2;
-
-                        points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
-
-                        
+                        points.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));  
                     }
                 }
             }
         }
+		
+	// If you press escape it exits the game / HOWEVER UBUNTU full screen caused this to fail on me!
         if (Keyboard::isKeyPressed(Keyboard::Escape))
 		{
 			window.close();
 		}
-        /*
-		****************************************
-		Update
-		****************************************
-		*/
-        if(points.size() > 0)
+
+
+	// Just making sure we have AT LEAST 1 point in the "points" vector
+        if(points.size() > 0) 
         {
-            for (int i = 0; i < 50; i++)
+	    // Generating 50 new points 
+            for (int i = 0; i < 50; i++) 
             {
-                int randomSelection = uniform_dist(generator); // picks a random location 
-                Vector2f pick_random_vertex = vertices[randomSelection]; // gets the last element of a vector
-                Vector2f last_point = points.back();
+                int randomSelection = uniform_dist(generator); // Picks one of the vertices  (0 - 5)
+                Vector2f pick_random_vertex = vertices[randomSelection]; // Selects a random vertices from randomSelection in the vector for the calculations below 
+                Vector2f last_point = points.back(); // Gets the last element of a vector
 
-                Vector2f direction = pick_random_vertex - last_point;
+                Vector2f direction = pick_random_vertex - last_point; // Literally pointing from the starting point to the end point for the next point 
 
-                Vector2f new_point = last_point + (2.0f / 3.0f) * direction; 
+                Vector2f new_point = last_point + (2.0f / 3.0f) * direction; //Calculates a 2/3 of the way point (not exactly mid-way, but it works)
 
-                points.push_back(new_point);
+                points.push_back(new_point); // Adds the point to the points vector
             }
-            ///generate more point(s)
-            ///select random vertex
-            ///calculate midpoint between random vertex and the last point in the vector
-            ///push back the newly generated coord.
         }
-        // plays rainbow title text animation at title screen
+
+        // Plays rainbow title text animation at title screen (TITLE SCREEN)
         if (titleScreen && rainbowTimer.getElapsedTime().asSeconds() > rainbowDuration)
         {
             rainbowTimer.restart();
@@ -175,11 +176,7 @@ int main()
                 stars[i].setFillColor(Color(rand() % 256, rand() % 256, rand() % 256));
             }
         }
-        /*
-		****************************************
-		Draw
-		****************************************
-		*/
+
         window.clear();
 
         if (titleScreen)
@@ -210,18 +207,17 @@ int main()
         {
             text.setString("ENJOY THE FRACTAL PATTERN!\nPRESS 'ESC' TO EXIT WHEN DONE"); 
             window.draw(text);
-            
+
+	    // Using size_t because well it can be the size of anything really and we don't need any more errors
             for (size_t i = 0; i < points.size(); ++i) {
             CircleShape point(2);
             point.setPosition(points[i]);
 
-            // Get the current color
             Color color = colors[colorIndex];
 
             point.setFillColor(color);
             window.draw(point);
 
-            // Increment the color index, looping back to the start if needed
             colorIndex = (colorIndex + 1) % colors.size();
         }
         }
